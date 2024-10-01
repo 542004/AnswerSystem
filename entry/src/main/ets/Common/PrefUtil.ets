@@ -1,7 +1,14 @@
 import globalContext from './GlobalContext'
 import {preferences} from '@kit.ArkData'
 import {Context} from '@ohos.abilityAccessCtrl'
-
+/**
+ * 该项目目前有两个首先项工具类
+ * 该工具类初始用于Login.ets，regist.ets文件中，存储用户账号和密码（可以还要其他地方使用到，我没有发现）
+ * 另一个首先项工具类封装在utils文件夹
+ *
+ * 后续考虑把两个合并
+ *
+ */
 export class PrefUtil{
   createPreferences(context:Context,preferenceName:string){
     let valuePreferences:Function=(()=>{

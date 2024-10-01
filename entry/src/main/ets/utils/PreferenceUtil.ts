@@ -1,6 +1,13 @@
 import preferences from '@ohos.data.preferences';
 import { KeyboardAvoidMode } from '@kit.ArkUI';
-
+/**
+ * 该项目目前有两个首先项工具类
+ * 该工具类初始用于Chat.ets，WelcomePages.ets文件中，分别用于存储对话历史记录和应用启动时是否同一服务
+ * （可以还要其他地方使用到，我没有发现）
+ * 另一个首先项工具类封装在Common文件夹
+ *
+ * 后续考虑把两个合并
+ */
 class PreferenceUtil{
   private pref: preferences.Preferences
 

@@ -1,5 +1,4 @@
 import PreferenceUtil from '../utils/PreferenceUtil'
-import Speak from './ChatSpeak'
 import HttpUtils from '../utils/HttpUtils'
 //跳转web
 import web_webview from '@ohos.web.webview'
