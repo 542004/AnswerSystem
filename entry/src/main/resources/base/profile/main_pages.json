@@ -6,6 +6,6 @@
     "pages/InfoPage",
     "pages/WelcomePages",
     "pages/CommonQuestion",
-    "pages/Theme"
+    "pages/ThemePage"
   ]
 }

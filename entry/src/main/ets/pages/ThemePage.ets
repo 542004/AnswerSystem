@@ -3,7 +3,7 @@
  */
 @Entry
 @Component
-struct Theme {
+struct ThemePage {
   @State message: string = '主题';
 
   build() {
