@@ -1,3 +1,6 @@
+/**
+ * 用户个人信息
+ */
 export default class userInfo {
   account: string = ''
   nickName: string = ''

@@ -1,3 +1,6 @@
+/**
+ * 用户账号密码
+ */
 export default class userAccount{
   account:string=''
   passWord:string=''

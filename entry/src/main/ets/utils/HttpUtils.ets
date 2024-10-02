@@ -1,7 +1,9 @@
 import http from '@ohos.net.http';
 import hilog from '@ohos.hilog';
 import { HttpResponse} from '../Model/HttpResponse';
-
+/**
+ * 请求AI的api
+ */
 class HttpUtils {
   request(question: string): Promise<string> {
     return new Promise((resolve, reject) => {

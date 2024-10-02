@@ -16,7 +16,9 @@ class DividerTmp {
     this.color = color
   }
 }
-
+/**
+ * 对话组件
+ */
 @Component
 export struct Chat {
   scroller: Scroller = new Scroller();
@@ -147,7 +149,7 @@ export struct Chat {
         }
 
         /**
-         * Chat
+         * Chat对话框
          */
         Column() {
           //写推荐搜索，常用

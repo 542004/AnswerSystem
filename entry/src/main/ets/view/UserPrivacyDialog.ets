@@ -1,5 +1,7 @@
 
-//使用@CustomDialog声明弹窗组件
+/**
+ * 使用@CustomDialog声明弹窗组件
+ */
 @CustomDialog
  struct UserPrivacyDialog {
   Controller: CustomDialogController = new CustomDialogController({

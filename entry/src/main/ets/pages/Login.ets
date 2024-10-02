@@ -1,3 +1,6 @@
+/**
+ * 登录页面
+ */
 import PrefUtil from "../Common/PrefUtil"
 import router from '@ohos.router';
 import CommonConstants from '../Common/CommonConstants'

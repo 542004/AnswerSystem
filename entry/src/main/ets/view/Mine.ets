@@ -1,5 +1,7 @@
 import router from '@ohos.router';
-
+/**
+ * 我的
+ */
 @Component
 export struct Mine{
   private imageSrc:Array<Resource>=[

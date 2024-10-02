@@ -1,3 +1,6 @@
+/**
+ * UserInfoComponent 中的 修改个人信息的文本输入框
+ */
 @Component
 export default struct TextInputWidget {
   //显示内容

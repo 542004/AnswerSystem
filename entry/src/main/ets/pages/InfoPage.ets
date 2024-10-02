@@ -1,3 +1,7 @@
+
+/**
+ * 个人信息中的修改信息页面
+ */
 import userInfo from '../viewmodel/userInfo'
 import router from '@ohos.router';
 import UserInfoRdbApi from '../Common/UserInfoRdbApi'

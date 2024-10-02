@@ -1,9 +1,12 @@
+/**
+ * 注册页面
+ */
 import PrefUtil from "../Common/PrefUtil"
 import router from '@ohos.router';
 import CommonConstants from '../Common/CommonConstants'
 @Entry
 @Component
-struct Index {
+struct Regist {
 
   @State userName:string =''
   @State code: string = '';

@@ -1,3 +1,6 @@
+/**
+ * 欢迎页面
+ */
 import { common, StartOptions } from '@kit.AbilityKit';
 import { router } from '@kit.ArkUI';
 import UserPrivacyDialog from "../view/UserPrivacyDialog";

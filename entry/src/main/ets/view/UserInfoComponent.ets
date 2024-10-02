@@ -1,4 +1,6 @@
-
+/**
+ * 个人中心的用户信息组件
+ */
 import CommonConstants from '../Common/CommonConstants'
 import router from '@ohos.router'
 import distributedKVStore from '@ohos.data.distributedKVStore'

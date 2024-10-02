@@ -1,6 +1,9 @@
+/**
+ * 主页面 包含Chat History ShowPage Mine
+ */
 import {Mine} from '../view/Mine'
 import {Chat} from '../view/Chat'
-import {showPage} from  '../view/showPage'
+import {ShowPage} from '../view/ShowPage'
 import router from '@ohos.router';
 @Entry
 @Component
@@ -39,7 +42,7 @@ struct Index{
         .tabBar(this.TabBuilder('历史',1))
         //汽车信息
         TabContent(){
-          showPage()
+          ShowPage()
         }
         .tabBar(this.TabBuilder('汽车信息',2))
         //我的
