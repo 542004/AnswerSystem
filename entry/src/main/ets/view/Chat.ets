@@ -3,6 +3,7 @@ import HttpUtils from '../utils/HttpUtils'
 //跳转web
 import web_webview from '@ohos.web.webview'
 import { router } from '@kit.ArkUI'
+import { NewChat } from '../utils/NewChat'
 
 class DividerTmp {
   strokeWidth: Length = 1
@@ -197,6 +198,21 @@ export struct Chat {
 
                   }
 
+                })
+                .fontColor(Color.Blue)
+                .backgroundColor(Color.Transparent)
+                .padding(10)
+
+              Button('新建对话')
+                .onClick(() => {
+                  NewChat.createNewChat(this.cun)
+                  //清空数据
+                  this.cun = Array(100).fill(null)
+                  this.kong = 0;
+                  this.pankong = 0;
+                  this.text = '';
+                  this.haha = '';
+                  this.linshi = [];
                 })
                 .fontColor(Color.Blue)
                 .backgroundColor(Color.Transparent)
