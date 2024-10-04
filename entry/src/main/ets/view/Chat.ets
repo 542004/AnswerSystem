@@ -33,6 +33,11 @@ export struct Chat {
   @State ifbreak : boolean =false
   @State haha : string = ''
   @State linshi : string[] = []
+  @LocalStorageLink('record') @Watch("recChange")linkedRec: string =''
+
+  recChange(){
+    this.text=this.linkedRec
+  }
 
   aboutToAppear(): void {
     PreferenceUtil.putPreferenceValue('talk1.0','1天气真好')
@@ -187,6 +192,8 @@ export struct Chat {
                       this.kong++
                       this.scroller.scrollToIndex(this.kong - 1)
                     })
+                    this.linkedRec=this.key2
+                    console.info(`${this.linkedRec} Chat的记录改变了`)
 
                   }
 
