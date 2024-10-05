@@ -94,10 +94,17 @@ export struct Chat {
     //最外层用来包里面的内容
     Column() {
       Row() {
-        Button('常见问题')
+        Text('常见问题')
           .onClick(()=>{
             router.pushUrl({
               url:"pages/CommonQuestion"
+            })
+          })
+
+        Image($r('app.media.xinjian')).width(32)
+          .onClick(()=>{
+            AlertDialog.show({
+              message:'sss'
             })
           })
       }
@@ -111,43 +118,73 @@ export struct Chat {
               if (this.cun && this.cun[Index] !== undefined && this.cun[Index] !== null &&
                 this.cun[Index].charAt(0) == '1') {
                 ListItem() {
-                  Column() {
-                    Text(this.cun[Index].substring(1).toString())
-                      .fontSize(25)
+                  Row(){
+                    Image($r('app.media.MyIcon')).width(40)
+                      .borderRadius(5)
+                      .margin({top:10})
+
+                    Column(){
+                      Column() {
+                        Text(this.cun[Index].substring(1).toString())
+                          .fontSize(25)
+                      }
+                      .alignItems(HorizontalAlign.Start)
+                      .width('100%')
+
+                    }
+                    .width('80%')
+                    .backgroundColor('#F6F6F6')
+                    .padding(10)
+                    .margin({top:30,left:10,right:10})
+                    .borderRadius({
+                      topRight: 20,
+                      bottomRight: 20,
+                      bottomLeft:20
+                    })
+
                   }
-                  .alignItems(HorizontalAlign.Start)
-                  .width('100%')
+                  .alignItems(VerticalAlign.Top)
+
+
+
                 }
-                .width('95%')
-                .backgroundColor('#F6F6F6')
-                .padding(10)
-                .margin(10)
-                .borderRadius({
-                  topLeft: 20,
-                  topRight: 20,
-                  bottomRight: 20
-                })
+
               }
               //用户框
               else if (this.cun && this.cun[Index] !== undefined && this.cun[Index] !== null &&
                 this.cun[Index].charAt(0) == '2') {
                 ListItem() {
-                  Column() {
-                    Text(this.cun[Index].substring(1).toString())
-                      .fontSize(25)
+                  Row(){
+                    Column(){
+                      Column() {
+                        Text(this.cun[Index].substring(1).toString())
+                          .fontSize(25)
+                      }
+                      .alignItems(HorizontalAlign.End)
+                      // .width('100%')
+                    }
+                    // .width('80%')
+                    .backgroundColor('#ffa5bfef')
+                    .padding(12)
+                    .margin({top:30,left:10,right:10})
+                    .borderRadius({
+                      topLeft: 20,
+                      bottomRight:20,
+                      bottomLeft: 20
+                    })
+
+                    Image($r('app.media.touxiang'))
+                      .width(40)
+                      .borderRadius(5)
+                      .margin({top:10})
                   }
-                  .alignItems(HorizontalAlign.End)
+                  .alignItems(VerticalAlign.Top)
+                  .justifyContent(FlexAlign.End)
                   .width('100%')
+
+
                 }
-                .width('95%')
-                .backgroundColor('#ffa5bfef')
-                .padding(10)
-                .margin(10)
-                .borderRadius({
-                  topLeft: 20,
-                  topRight: 20,
-                  bottomLeft: 20
-                })
+
               } else {
               }
 
