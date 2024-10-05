@@ -13,7 +13,15 @@ struct ThemePage {
 
 
   aboutToAppear(): void {
-
+    PreferenceUtil.getPreferenceValue('loginname',false)
+      // .then((value) => {
+      //   if (value != null || value != undefined) {
+      //     this.lin = value?.toString()
+      //   }
+      // })
+      // .catch((error: Error) => {
+      //   console.error('获取值时出现错误', error);
+      // });
     PreferenceUtil.getPreferenceValue('zihao','flase')
       .then((value) => {
         if (value != null || value != undefined) {
@@ -47,8 +55,9 @@ struct ThemePage {
         Button('确认')
           .onClick(() => {
             PreferenceUtil.putPreferenceValue('zihao',Number(this.number1))
-            // router.pushUrl({
-            //   url:'pages/Login'
+            // router.replaceUrl({
+            //   url:'pages/Index',
+            //   params:{}
             // })
             router.back()
           })

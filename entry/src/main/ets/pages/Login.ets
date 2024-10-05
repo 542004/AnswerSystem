@@ -4,6 +4,7 @@
 import PrefUtil from "../Common/PrefUtil"
 import router from '@ohos.router';
 import CommonConstants from '../Common/CommonConstants'
+import PreferenceUtil from '../utils/PreferenceUtil'
 @Entry
 @Component
 struct Index {
@@ -42,6 +43,8 @@ struct Index {
                   if (this.userName != '' && this.code != '') {
                     PrefUtil.getValue(this.userName,CommonConstants.USER_PREF).then((value)=>{
                       if(value===this.code){
+                        PreferenceUtil.putPreferenceValue('login',true)
+                        PreferenceUtil.putPreferenceValue('loginname',this.userName)
                         router.pushUrl({
                           url:'pages/Index',
                           params:{
