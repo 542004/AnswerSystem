@@ -1,4 +1,5 @@
 import router from '@ohos.router';
+import PreferenceUtil from '../utils/PreferenceUtil'
 /**
  * 我的
  */
@@ -11,10 +12,33 @@ export struct Mine{
     $r('app.media.L9'),
   ]
   @Consume account:string
+  @State lin : string = '20'
   aboutToAppear() {
     console.info(`mine的${this.account}`)
-  }
+    PreferenceUtil.getPreferenceValue('zihao','flase')
+      .then((value) => {
+        if (value != null || value != undefined) {
+          this.lin = value?.toString()
+        }
 
+      })
+      .catch((error: Error) => {
+        console.error('获取值时出现错误', error);
+      });
+  }
+//   onPageShow(): void {
+//     console.info(`mine的${this.account}`)
+//     PreferenceUtil.getPreferenceValue('zihao','flase')
+//       .then((value) => {
+//         if (value != null || value != undefined) {
+//           this.lin = value?.toString()
+//         }
+//
+//       })
+//       .catch((error: Error) => {
+//         console.error('获取值时出现错误', error);
+//       });
+// }
   build(){
     Column(){
       //头像和昵称
@@ -25,7 +49,7 @@ export struct Mine{
             .height(70)
             .borderRadius(35)
           Text(this.account)
-            .fontSize(20)
+            .fontSize(Number(this.lin))
             .width('30%')
           Blank()
             .width('35%')
@@ -142,9 +166,10 @@ export struct Mine{
             }
           }//跳转主题设置页面
           .onClick(()=>{
-
+            router.pushUrl({
+              url:'pages/ThemePage',params:{name : this.account}
+            })
           })
-
         }
       }
       .backgroundColor(Color.White)

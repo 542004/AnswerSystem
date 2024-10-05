@@ -7,13 +7,14 @@ import userInfoApi from '../Common/UserInfoRdbApi'
 import {columnUserInfoList} from '../Model/RdbColumnModel'
 import commonConstants from '../Common/CommonConstants'
 import userInfo from '../viewmodel/userInfo'
+import preferenceUtil from '../utils/PreferenceUtil'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam){
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     PrefUtil.createPreferences(this.context,commonConstants.HISTORY_PREF)
     PrefUtil.createPreferences(this.context,commonConstants.USER_PREF)
-
+    preferenceUtil.loadPreference(this.context)
     RdbUtils.initDb(this.context, 'UserInfoDataBase');
     RdbUtils.createDb()
 
