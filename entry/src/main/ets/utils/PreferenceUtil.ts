@@ -53,6 +53,7 @@ class PreferenceUtil{
       return
     }
     try {
+
       // 读数据
       let value = await this.pref.get(key, defaultValue)
       console.log(`读取Preferences[${key} = ${value}]成功`)
