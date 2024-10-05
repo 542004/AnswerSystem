@@ -3,6 +3,7 @@ import PreferenceUtil from '../utils/PreferenceUtil'
 /**
  * 我的
  */
+let params = router.getParams()
 @Component
 export struct Mine{
   private imageSrc:Array<Resource>=[
@@ -12,7 +13,9 @@ export struct Mine{
     $r('app.media.L9'),
   ]
   @Consume account:string
-  @State lin : string = '20'
+  @Prop lin : string = '20'
+  // @State size : string = params.['name']
+
   aboutToAppear() {
     console.info(`mine的${this.account}`)
     PreferenceUtil.getPreferenceValue('zihao','flase')
@@ -26,19 +29,18 @@ export struct Mine{
         console.error('获取值时出现错误', error);
       });
   }
-//   onPageShow(): void {
-//     console.info(`mine的${this.account}`)
-//     PreferenceUtil.getPreferenceValue('zihao','flase')
-//       .then((value) => {
-//         if (value != null || value != undefined) {
-//           this.lin = value?.toString()
-//         }
-//
-//       })
-//       .catch((error: Error) => {
-//         console.error('获取值时出现错误', error);
-//       });
-// }
+  onDidBuild(): void {
+    PreferenceUtil.getPreferenceValue('zihao','flase')
+      .then((value) => {
+        if (value != null || value != undefined) {
+          this.lin = value?.toString()
+        }
+
+      })
+      .catch((error: Error) => {
+        console.error('获取值时出现错误', error);
+      });
+}
   build(){
     Column(){
       //头像和昵称
@@ -59,11 +61,13 @@ export struct Mine{
             .onClick(()=>{
               AlertDialog.show(
                 {
-                  message: '确认注销吗',
+                  message: '确认退出登录吗',
                   buttons: [
                     {
                       value: '确认',
                       action: () => {
+                        PreferenceUtil.putPreferenceValue('login',false)
+                        PreferenceUtil.putPreferenceValue('loginname','')
                         router.replaceUrl({
                           url:"pages/Login"
                         })
@@ -125,8 +129,8 @@ export struct Mine{
               Row() {
                 Image($r('app.media.account')).width(20).height(20).margin({right: 10 })
                 Text('修改信息')
-                  .height(20)
-                  .fontSize(16)
+                  .height(35)
+                  .fontSize(Number(this.lin)-4)
                   .fontColor('#0F172A')
                   .flexGrow(1)
                   .fontWeight(400)
@@ -154,8 +158,8 @@ export struct Mine{
               Row() {
                 Image($r('app.media.subject')).width(20).height(20).margin({right: 10})
                 Text('主题设置')
-                  .height(20)
-                  .fontSize(16)
+                  .height(35)
+                  .fontSize(Number(this.lin)-4)
                   .fontColor('#0F172A')
                   .flexGrow(1)
                   .fontWeight(400)

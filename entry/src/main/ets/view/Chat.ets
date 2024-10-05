@@ -140,7 +140,7 @@ export struct Chat {
                       Column(){
                         Column() {
                           Text(this.cun[Index].substring(1).toString())
-                            .fontSize(25)
+                            .fontSize(20)
                         }
                         .alignItems(HorizontalAlign.Start)
                         .width('100%')
@@ -169,7 +169,7 @@ export struct Chat {
                       Column(){
                         Column() {
                           Text(this.cun[Index].substring(1).toString())
-                            .fontSize(25)
+                            .fontSize(20)
                         }
                         .alignItems(HorizontalAlign.End)
                         // .width('100%')
