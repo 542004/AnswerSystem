@@ -4,6 +4,8 @@ import HttpUtils from '../utils/HttpUtils'
 import web_webview from '@ohos.web.webview'
 import { router } from '@kit.ArkUI'
 import { NewChat } from '../utils/NewChat'
+//主菜单抽屉
+import {MyCustomDialog} from '../view/MenuDialog'
 
 class DividerTmp {
   strokeWidth: Length = 1
@@ -85,24 +87,59 @@ export struct Chat {
     }
   }
 
+  //主菜单抽屉
+  menu_controller:CustomDialogController=new CustomDialogController({
+    builder:MyCustomDialog({
+
+    }),
+    alignment:DialogAlignment.TopStart,
+    cornerRadius:{topRight:10,bottomRight:10,topLeft:0,bottomLeft:0},
+    width:270,
+    height:'100%',
+    openAnimation:{
+      duration:300
+    },
+    backgroundColor:'#ffd2daff'
+  })
+
   build() {
     //最外层用来包里面的内容
     Column() {
       Row() {
-        Text('常见问题')
+        Image($r('app.media.liebiao')).width(25)
           .onClick(()=>{
-            router.pushUrl({
-              url:"pages/CommonQuestion"
-            })
+            this.menu_controller.open()
           })
+          .margin({left:17})
 
-        Image($r('app.media.xinjian')).width(32)
-          .onClick(()=>{
-            AlertDialog.show({
-              message:'sss'
+        Row(){
+          Text('常见问题')
+            .onClick(()=>{
+              router.pushUrl({
+                url:"pages/CommonQuestion"
+              })
             })
-          })
+            .fontColor('#ff5d66e5')
+            .fontSize(20)
+            .margin({right:13})
+
+          Image($r('app.media.xinjian1')).width(35)
+            .onClick(()=>{
+              NewChat.createNewChat(this.cun)
+              //清空数据
+              this.cun = Array(100).fill(null)
+              this.kong = 0;
+              this.pankong = 0;
+              this.text = '';
+              this.haha = '';
+              this.linshi = [];
+            })
+        }
+        .margin({right:17})
+
       }
+      .justifyContent(FlexAlign.SpaceBetween)
+      .width('100%')
 
       Column() {
         Column() {
@@ -189,7 +226,7 @@ export struct Chat {
           .width('100%')
           .height('90%')
 
-          // .scrollBar(BarState.Off)
+          .scrollBar(BarState.Off)
 
         }
 
@@ -212,9 +249,11 @@ export struct Chat {
                   this.key2 = value
                   this.text = value
                 })
-                .width('80%')
+                .width('60%')
                 .backgroundColor(Color.Transparent)
-              Button('查询')
+
+              Image($r('app.media.send'))
+                .width(50)
                 .onClick(() => {
 
                   if (this.text != '') {
@@ -236,24 +275,23 @@ export struct Chat {
                   }
 
                 })
-                .fontColor(Color.Blue)
                 .backgroundColor(Color.Transparent)
                 .padding(10)
 
-              Button('新建对话')
-                .onClick(() => {
-                  NewChat.createNewChat(this.cun)
-                  //清空数据
-                  this.cun = Array(100).fill(null)
-                  this.kong = 0;
-                  this.pankong = 0;
-                  this.text = '';
-                  this.haha = '';
-                  this.linshi = [];
-                })
-                .fontColor(Color.Blue)
-                .backgroundColor(Color.Transparent)
-                .padding(10)
+              // Button('新建对话')
+              //   .onClick(() => {
+              //     NewChat.createNewChat(this.cun)
+              //     //清空数据
+              //     this.cun = Array(100).fill(null)
+              //     this.kong = 0;
+              //     this.pankong = 0;
+              //     this.text = '';
+              //     this.haha = '';
+              //     this.linshi = [];
+              //   })
+              //   .fontColor(Color.Blue)
+              //   .backgroundColor(Color.Transparent)
+              //   .padding(10)
             }
             .width('100%')
             .justifyContent(FlexAlign.SpaceBetween)
