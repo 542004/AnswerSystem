@@ -47,13 +47,13 @@ class PreferenceUtil{
     }
   }
 
-
   async getPreferenceValue(key: string, defaultValue: preferences.ValueType){
     if (!this.pref) {
       console.log(`Preferences尚未初始化！`)
       return
     }
     try {
+
       // 读数据
       let value = await this.pref.get(key, defaultValue)
       console.log(`读取Preferences[${key} = ${value}]成功`)
@@ -62,8 +62,6 @@ class PreferenceUtil{
       console.log(`读取Preferences[${key}]失败`, JSON.stringify(e))
     }
   }
-
-
 
 }
 

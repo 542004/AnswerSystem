@@ -101,7 +101,7 @@ struct Index {
           .width('30%')
           .onClick(()=>{
             router.pushUrl({
-              url:'pages/regist'
+              url:'pages/Regist'
             })
           })
 
