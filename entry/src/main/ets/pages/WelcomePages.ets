@@ -6,7 +6,6 @@ import { router } from '@kit.ArkUI';
 import UserPrivacyDialog from "../view/UserPrivacyDialog";
 import PreferencesUtil from '../utils/PreferenceUtil'
 
-
 @Extend(Text)
 function TextFn() {
 
@@ -33,22 +32,47 @@ struct WelcomePage {
       cancel: () => this.exitApp()
     }),
   })
-
+ @State loginname1 : string = ''
   async aboutToAppear() {
+
     //加载首选项
     let isAgree = await PreferencesUtil.getPreferenceValue(PREF_KEY, false)//key和错误时传回的值
+    let login = await PreferencesUtil.getPreferenceValue('login', false)
+    let loginname = await PreferencesUtil.getPreferenceValue('loginname', false)
+    if (loginname != undefined)
+    {
+      this.loginname1 = loginname?.toString()
+    }
     //判断是否同意
     if (isAgree) {
-      this.jumpToIndex()
+      if (login && this.loginname1 != 'false') {
+        this.jumpToIndex2()
+      }
+      else {
+        this.jumpToIndex()
+      }
     } else {
       this.Controller.open()
     }
+
+
   }
 
   jumpToIndex() {
     setTimeout(() => {
       router.replaceUrl({
         url:'pages/Login'
+      })
+    },2000)
+  }
+
+  jumpToIndex2() {
+    setTimeout(() => {
+      router.replaceUrl({
+        url:'pages/Index',
+        params:{
+          account : this.loginname1
+        }
       })
     },2000)
   }

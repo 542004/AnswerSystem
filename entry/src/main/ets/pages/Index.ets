@@ -6,6 +6,7 @@ import {Chat} from '../view/Chat'
 import {ShowPage} from '../view/ShowPage'
 import {History} from '../view/History'
 import router from '@ohos.router';
+import PreferenceUtil from '../utils/PreferenceUtil'
 
 
 let para: Record<string, string> = { 'record': '' };
@@ -15,8 +16,8 @@ let storage: LocalStorage = new LocalStorage(para);
 struct Index{
   private controller: TabsController = new TabsController()
   @State currentPage:number=0
+  @State lin : string = ''
   @Provide account:string=(router.getParams() as Record<string,string>)['account']
-
   @Builder
   TabBuilder(text:string,index:number){
     Column(){
@@ -29,6 +30,18 @@ struct Index{
     .justifyContent(FlexAlign.Center)
     .width('100%')
     .height('100%')
+  }
+  onPageShow(): void {
+    PreferenceUtil.getPreferenceValue('zihao','flase')
+      .then((value) => {
+        if (value != null || value != undefined) {
+          this.lin = value?.toString()
+        }
+
+      })
+      .catch((error: Error) => {
+        console.error('获取值时出现错误', error);
+      });
   }
   build(){
     Column(){
@@ -50,7 +63,9 @@ struct Index{
         .tabBar(this.TabBuilder('汽车信息',2))
         //我的
         TabContent(){
-          Mine()
+          Mine({
+            lin : this.lin
+          })
         }
         .tabBar(this.TabBuilder('我的',3))
       }
