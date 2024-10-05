@@ -7,6 +7,7 @@ import {ShowPage} from '../view/ShowPage'
 import {History} from '../view/History'
 import router from '@ohos.router';
 
+
 let para: Record<string, string> = { 'record': '' };
 let storage: LocalStorage = new LocalStorage(para);
 @Entry(storage)
@@ -15,7 +16,6 @@ struct Index{
   private controller: TabsController = new TabsController()
   @State currentPage:number=0
   @Provide account:string=(router.getParams() as Record<string,string>)['account']
-
 
   @Builder
   TabBuilder(text:string,index:number){
@@ -30,7 +30,6 @@ struct Index{
     .width('100%')
     .height('100%')
   }
-
   build(){
     Column(){
       Tabs({barPosition:BarPosition.End,controller:this.controller}){

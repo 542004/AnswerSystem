@@ -4,26 +4,29 @@
 import historyInfo from '../viewmodel/historyInfo'
 import distributedKVStore from '@ohos.data.distributedKVStore';
 import findAllContains from '../Common/MatchUtil'
-
+let Data:Array<string>=[]
+export function getBriefData():Array<string>{
+  return Data
+}
 @Component
 export struct History{
   @Consume account : string
   @State historyInfo:historyInfo=new historyInfo(this.account)
-  @State hisConv:Array<string>=[]
+  @State hisConv:Array<string>=[]//存放历史记录
   @State searchText :string=''
   @State listState:boolean=true
   @State matchHis:Array<string>=[]
   @State shallSave:boolean=true
   @State flag:boolean=false
-  private kvManager: distributedKVStore.KVManager | null = null
+  @State kvManager: distributedKVStore.KVManager | null=null
   //声明KVStore对象
   private kvStore: distributedKVStore.SingleKVStore | null = null
-  @LocalStorageLink("record") @Watch("recChange") linkedRec:string=''
+  @LocalStorageLink("record") @Watch("recChange") linkedRec:string=''//每一个问题
 
   recChange(){
     if(this.shallSave){
       console.info(`${this.linkedRec} 成功改变`)
-      this.hisConv.unshift(this.linkedRec)
+      this.hisConv.unshift(this.linkedRec)//头插法插入历史记录数组
       this.historyInfo.hisConv=this.hisConv
       this.kvStore?.put(this.account, JSON.stringify(this.historyInfo), (err) => {
         if (err !== undefined) {
@@ -59,7 +62,7 @@ export struct History{
         }
 
         //指定Options和storeId，创建并得到指定类型的KVStore数据库storeId为数据库唯一标识符
-        this.kvManager.getKVStore(`${this.account}`, options, (err, kvStore: distributedKVStore.SingleKVStore) => {
+        this.kvManager?.getKVStore(`${this.account}`, options, (err, kvStore: distributedKVStore.SingleKVStore) => {
           if (err) {
             console.error(`无法获取KVStore。 Code:${err.code},message:${err.message}`)
             return
@@ -69,9 +72,10 @@ export struct History{
           //通过get获取指定键的值
           this.kvStore?.get(`${this.account}`).then((res) => {
             //通过JSON.parse()解析数据，再使用as断言进行类型转换
-            let historyModel = JSON.parse(res.toString()) as historyInfo
+            let historyModel:historyInfo = JSON.parse(res.toString()) as historyInfo
             //对历史记录数组
             this.hisConv=historyModel.hisConv
+            Data=historyModel.hisConv
           })
         })
       } catch (e) {

@@ -1,10 +1,11 @@
 import PreferenceUtil from '../utils/PreferenceUtil'
 import HttpUtils from '../utils/HttpUtils'
+import distributedKVStore from '@ohos.data.distributedKVStore';
 //跳转web
 import web_webview from '@ohos.web.webview'
 import { router } from '@kit.ArkUI'
 import { NewChat } from '../utils/NewChat'
-
+import {getBriefData} from '../view/History'
 class DividerTmp {
   strokeWidth: Length = 1
   startMargin: Length = 0
@@ -25,6 +26,7 @@ class DividerTmp {
 export struct Chat {
   scroller: Scroller = new Scroller();
   controller: web_webview.WebviewController = new web_webview.WebviewController()
+  @Consume account : string
   @State zan : string = ''
   @State cun : string[] = Array(100).fill(null)
   @State key2 : string = ''
@@ -35,51 +37,19 @@ export struct Chat {
   @State ifbreak : boolean =false
   @State haha : string = ''
   @State linshi : string[] = []
+  @Prop kvManager: distributedKVStore.KVManager | null
   @LocalStorageLink('record') @Watch("recChange")linkedRec: string =''
 
   recChange(){
     this.text=this.linkedRec
   }
 
+  /**
+   * 之前aboutToAppear里面的首选项存储历史记录删除了
+   * 改用数据库存储
+   */
   aboutToAppear(): void {
-    PreferenceUtil.putPreferenceValue('talk1.0','1天气真好')
-    PreferenceUtil.putPreferenceValue('talk1.1','2你说的真对')
-    PreferenceUtil.putPreferenceValue('talk1.2','1谢谢')
-    PreferenceUtil.putPreferenceValue('talk1.3','2不客气')
-    // HttpUtils.request("刹车片是什么东西").then(resp => {
-    //   this.haha = resp
-    // })
 
-    for (let index = 0; index < 100; index++) {
-      PreferenceUtil.getPreferenceValue(`talk1.${index}`, null)
-        .then((value) => {
-          if ((value === null || value === undefined) && this.pankong == 0 ) {
-            console.log('值未填入');
-            this.kong = index
-            console.log('kong',index)
-            this.pankong = 1
-          } else if (value) {
-            let a = value
-            this.cun[index] = value.toString()
-            console.log('值',this.cun[index])
-          }
-          else {
-            this.ifbreak = true
-            console.log('获取到的值不是有效的对象或缺少');
-          }
-          if (this.ifbreak == true) {
-            console.log('break')
-            index = 99
-          }
-        })
-        .catch((error: Error) => {
-          console.error('获取值时出现错误', error);
-        });
-      if (this.ifbreak == true) {
-        console.log('break')
-        break
-      }
-    }
   }
 
   @Builder
@@ -93,6 +63,7 @@ export struct Chat {
   build() {
     //最外层用来包里面的内容
     Column() {
+
       Row() {
         Text('常见问题')
           .onClick(()=>{
@@ -110,6 +81,9 @@ export struct Chat {
       }
 
       Column() {
+        /**
+         * 问答消息框
+         */
         Column() {
           List({ initialIndex: this.kong - 1, scroller: this.scroller.scrollEdge(Edge.End) }) {
             // List() {
@@ -144,9 +118,6 @@ export struct Chat {
 
                   }
                   .alignItems(VerticalAlign.Top)
-
-
-
                 }
 
               }
@@ -193,80 +164,72 @@ export struct Chat {
           }
           .width('100%')
           .height('90%')
-
           // .scrollBar(BarState.Off)
-
         }
 
         /**
-         * Chat对话框
+         * Chat对话输入框
          */
         Column() {
           //写推荐搜索，常用
-          Column() {
-            Row() {
-
-            }
-
-            Row() {
-              TextInput({
-                placeholder: '请输入内容',
-                text: this.text
+          Row() {
+            TextInput({
+              placeholder: '请输入内容',
+              text: this.text
+            })
+              .onChange((value) => {
+                this.key2 = value
+                this.text = value
               })
-                .onChange((value) => {
-                  this.key2 = value
-                  this.text = value
-                })
-                .width('80%')
-                .backgroundColor(Color.Transparent)
-              Button('查询')
-                .onClick(() => {
+              .width('80%')
+              .backgroundColor(Color.Transparent)
 
-                  if (this.text != '') {
-                    console.log(this.key2)
-                    PreferenceUtil.putPreferenceValue(`talk1.${this.kong}`, '2' + this.key2)
-                    this.cun[this.kong] = '2' + this.key2
+            Button('查询')
+              .onClick(() => {
+                if (this.text != '') {
+                  console.log(this.key2)
+                  PreferenceUtil.putPreferenceValue(`talk1.${this.kong}`, '2' + this.key2)
+                  this.cun[this.kong] = '2' + this.key2
+                  this.kong++
+
+                  // this.scroller.scrollToIndex(this.kong-1)
+                  this.scroller.scrollToIndex(0)
+                  HttpUtils.request(this.key2).then(resp => {
+                    this.haha = resp
+                    PreferenceUtil.putPreferenceValue(`talk1.${this.kong}`, '1' + this.haha)
+                    this.cun[this.kong] = '1' + this.haha
                     this.kong++
-                    this.text = ''
-                    // this.scroller.scrollToIndex(this.kong-1)
-                    this.scroller.scrollToIndex(0)
-                    HttpUtils.request(this.key2).then(resp => {
-                      this.haha = resp
-                      PreferenceUtil.putPreferenceValue(`talk1.${this.kong}`, '1' + this.haha)
-                      this.cun[this.kong] = '1' + this.haha
-                      this.kong++
-                      this.scroller.scrollToIndex(this.kong - 1)
-                    })
-                    this.linkedRec=this.key2
-                    console.info(`${this.linkedRec} Chat的记录改变了`)
+                    this.scroller.scrollToIndex(this.kong - 1)
+                  })
+                  this.linkedRec=this.key2
+                  this.text = ''
+                  console.info(`${this.linkedRec} Chat的记录改变了`)
+                }
+              })
+              .fontColor(Color.Blue)
+              .backgroundColor(Color.Transparent)
+              .padding(10)
 
-                  }
-
-                })
-                .fontColor(Color.Blue)
-                .backgroundColor(Color.Transparent)
-                .padding(10)
-
-              Button('新建对话')
-                .onClick(() => {
-                  NewChat.createNewChat(this.cun)
-                  //清空数据
-                  this.cun = Array(100).fill(null)
-                  this.kong = 0;
-                  this.pankong = 0;
-                  this.text = '';
-                  this.haha = '';
-                  this.linshi = [];
-                })
-                .fontColor(Color.Blue)
-                .backgroundColor(Color.Transparent)
-                .padding(10)
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.SpaceBetween)
-            .borderRadius(20)
-            .backgroundColor('#F4F6F5')
+            Button('新建对话')
+              .onClick(() => {
+                NewChat.createNewChat(this.cun)
+                //清空数据
+                this.cun = Array(100).fill(null)
+                this.kong = 0;
+                this.pankong = 0;
+                this.text = '';
+                this.haha = '';
+                this.linshi = [];
+              })
+              .fontColor(Color.Blue)
+              .backgroundColor(Color.Transparent)
+              .padding(10)
           }
+          .width('100%')
+          .justifyContent(FlexAlign.SpaceBetween)
+          .borderRadius(20)
+          .backgroundColor('#F4F6F5')
+
         }
         .justifyContent(FlexAlign.End)
         .width('100%')
