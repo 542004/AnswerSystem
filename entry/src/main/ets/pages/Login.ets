@@ -42,7 +42,7 @@ struct Index {
                   if (this.userName != '' && this.code != '') {
                     PrefUtil.getValue(this.userName,CommonConstants.USER_PREF).then((value)=>{
                       if(value===this.code){
-                        router.pushUrl({
+                        router.replaceUrl({
                           url:'pages/Index',
                           params:{
                             account:this.userName
