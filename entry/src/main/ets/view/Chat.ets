@@ -56,8 +56,6 @@ export struct Chat {
    * 之前aboutToAppear里面的首选项存储历史记录删除了
    * 改用数据库存储
    */
-
-
   aboutToAppear(): void {
   }
 
@@ -75,7 +73,6 @@ export struct Chat {
     this.text = '';
     this.haha = '';
     this.linshi = [];
-
   }
 
   @Builder
@@ -108,7 +105,6 @@ export struct Chat {
   build() {
     //最外层用来包里面的内容
     Column() {
-
       Row() {
         Image($r('app.media.liebiao')).width(25)
           .onClick(()=>{
@@ -129,25 +125,15 @@ export struct Chat {
             .fontSize(20)
             .margin({right:13})
 
-          Text(getBriefData().toString())
+          // Text(getBriefData().toString())
 
 
           Image($r('app.media.xinjian1')).width(35)
             .onClick(()=>{
               this.xinjian()
-              // console.info('历史记录'+getBriefData().toString())
-              // NewChat.createNewChat(this.cun)
-              // //清空数据
-              // this.cun = Array(100).fill(null)
-              // this.kong = 0;
-              // this.pankong = 0;
-              // this.text = '';
-              // this.haha = '';
-              // this.linshi = [];
             })
         }
         .margin({right:17})
-
       }
       .justifyContent(FlexAlign.SpaceBetween)
       .width('100%')
@@ -225,8 +211,6 @@ export struct Chat {
                     .alignItems(VerticalAlign.Top)
                     .justifyContent(FlexAlign.End)
                     .width('100%')
-
-
                   }
 
                 } else {
