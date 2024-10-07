@@ -27,6 +27,8 @@ class DividerTmp {
 /**
  * 对话组件
  */
+
+
 @Component
 export struct Chat {
   scroller: Scroller = new Scroller();
@@ -44,6 +46,7 @@ export struct Chat {
   @State linshi : string[] = []
   @Prop kvManager: distributedKVStore.KVManager | null
   @LocalStorageLink('record') @Watch("recChange")linkedRec: string =''
+  @State message: string[]=['1']
 
   recChange(){
     this.text=this.linkedRec
@@ -53,7 +56,26 @@ export struct Chat {
    * 之前aboutToAppear里面的首选项存储历史记录删除了
    * 改用数据库存储
    */
+
+
   aboutToAppear(): void {
+  }
+
+  onPageShow(): void {
+    console.info('jian1'+getBriefData().toString())
+  }
+
+  xinjian(){
+    console.info('历史记录'+getBriefData().toString())
+    NewChat.createNewChat(this.cun)
+    //清空数据
+    this.cun = Array(100).fill(null)
+    this.kong = 0;
+    this.pankong = 0;
+    this.text = '';
+    this.haha = '';
+    this.linshi = [];
+
   }
 
   @Builder
@@ -67,7 +89,11 @@ export struct Chat {
   //主菜单抽屉
   menu_controller:CustomDialogController=new CustomDialogController({
     builder:MyCustomDialog({
-
+      message:$message,
+      text:$text,
+      change:()=>{
+        this.xinjian()
+      }
     }),
     alignment:DialogAlignment.TopStart,
     cornerRadius:{topRight:10,bottomRight:10,topLeft:0,bottomLeft:0},
@@ -86,7 +112,9 @@ export struct Chat {
       Row() {
         Image($r('app.media.liebiao')).width(25)
           .onClick(()=>{
+            this.message=getBriefData()
             this.menu_controller.open()
+            console.info('jian'+this.message.toString())
           })
           .margin({left:17})
 
@@ -101,16 +129,21 @@ export struct Chat {
             .fontSize(20)
             .margin({right:13})
 
+          Text(getBriefData().toString())
+
+
           Image($r('app.media.xinjian1')).width(35)
             .onClick(()=>{
-              NewChat.createNewChat(this.cun)
-              //清空数据
-              this.cun = Array(100).fill(null)
-              this.kong = 0;
-              this.pankong = 0;
-              this.text = '';
-              this.haha = '';
-              this.linshi = [];
+              this.xinjian()
+              // console.info('历史记录'+getBriefData().toString())
+              // NewChat.createNewChat(this.cun)
+              // //清空数据
+              // this.cun = Array(100).fill(null)
+              // this.kong = 0;
+              // this.pankong = 0;
+              // this.text = '';
+              // this.haha = '';
+              // this.linshi = [];
             })
         }
         .margin({right:17})
@@ -140,7 +173,7 @@ export struct Chat {
                       Column(){
                         Column() {
                           Text(this.cun[Index].substring(1).toString())
-                            .fontSize(20)
+                            .fontSize(15)
                         }
                         .alignItems(HorizontalAlign.Start)
                         .width('100%')
@@ -169,7 +202,7 @@ export struct Chat {
                       Column(){
                         Column() {
                           Text(this.cun[Index].substring(1).toString())
-                            .fontSize(20)
+                            .fontSize(15)
                         }
                         .alignItems(HorizontalAlign.End)
                         // .width('100%')

@@ -4,6 +4,8 @@
 import historyInfo from '../viewmodel/historyInfo'
 import distributedKVStore from '@ohos.data.distributedKVStore';
 import findAllContains from '../Common/MatchUtil'
+import { data } from '@kit.TelephonyKit';
+
 let Data:Array<string>=[]
 export function getBriefData():Array<string>{
   return Data
@@ -168,6 +170,8 @@ export struct History{
               .width('100%')
             })
 
+
+
           }
         }
       }
@@ -208,6 +212,7 @@ export struct History{
                   }
                 ],
               })
+            Data=[];
           })
       }
       .onHover((isHover?:boolean)=>{
